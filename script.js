@@ -39,3 +39,26 @@ form.addEventListener('submit', async (e) => {
     console.error(err);
   }
 });
+
+// Force-download CV button handler
+const forceDownloadBtn = document.getElementById('force-download-cv');
+if (forceDownloadBtn) {
+  forceDownloadBtn.addEventListener('click', async () => {
+    try {
+      const url = '/assets/Nolwazi_Vundla_CV.pdf';
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Network response was not ok');
+      const blob = await res.blob();
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'Nolwazi_Vundla_CV.pdf';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(a.href);
+    } catch (err) {
+      alert('Download failed: ' + (err.message || err));
+      console.error(err);
+    }
+  });
+}
